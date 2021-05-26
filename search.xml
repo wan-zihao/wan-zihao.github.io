@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>并查集</title>
+    <url>/2021/05/25/%E5%B9%B6%E6%9F%A5%E9%9B%86/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
+      <tags>
+        <tag>并查集</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>堆</title>
     <url>/2021/05/25/%E5%A0%86/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>堆以堆顶分为小根堆和大根堆，堆顶是堆中元素的最小值则是小根堆，反之亦然</p>
@@ -33,17 +44,6 @@
       </categories>
       <tags>
         <tag>堆</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>并查集</title>
-    <url>/2021/05/25/%E5%B9%B6%E6%9F%A5%E9%9B%86/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>数据结构</category>
-      </categories>
-      <tags>
-        <tag>并查集</tag>
       </tags>
   </entry>
   <entry>
