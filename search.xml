@@ -1,32 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>KMP</title>
-    <url>/2021/05/27/KMP/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>kmp是一种高效的字符串匹配算法，高效的同时也难理解</p>
-<p>我们要抓住一个点，如何优化暴力匹配</p>
- <span id="more"></span>
-
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>暴力匹配是容易的</p>
-<p><strong>用s数组存储长串，长度为m，p数组存储短串（模板串），长度为n, 下标均从1开始存储（习惯）</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= m; i ++)&#123;</span><br><span class="line">    <span class="keyword">boolean</span> flag = <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j ++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(s[i] != p[j])&#123;</span><br><span class="line">            flag = <span class="keyword">false</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 只有flag没有被赋成false，才说明完全匹配成功</span></span><br><span class="line">    <span class="keyword">if</span>(flag)&#123;</span><br><span class="line">       <span class="comment">// </span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>上面的是暴力做法，暴力在哪呢，暴力在无论每次匹配后是成功还是失败，都会从下一个坐标完全从0开始匹配！</p>
-<p>KMP就是在这里可以做优化</p>
-<p><img src="https://gitee.com/amazing-feather/images/raw/master/20210527222847.png" alt="image-20210527222847146"></p>
-<p>那么如何预处理出next数组，核心是    <strong>自己与自己匹配</strong></p>
-<p>代码实现中可以先看在next数组已经求出来的情况下正常的长短串匹配的过程</p>
-<p>理解上面的之后可以对比着理解 <strong>如何求出next数组</strong></p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//求next数组(i == 1时就只能从0开始)(自己匹配自己，每次循环有点像dp)</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>, j = <span class="number">0</span>; i &lt;= n; i ++)&#123;</span><br><span class="line">    <span class="comment">//如果一直匹配不到就一直回退，知道匹配成功或者回退到0</span></span><br><span class="line">    <span class="keyword">while</span>(j != <span class="number">0</span> &amp;&amp; p[j + <span class="number">1</span>] != p[i])&#123;</span><br><span class="line">        j = ne[j];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//如果匹配成功,j就加一（因为j是错了一位的，加上1才应该是回退的点，回退的这个点是匹配成功的最后一个字符，由于错了一位，之后回退后，再次匹配就刚好是从这个最后一位成功的下一位开始匹配判断）</span></span><br><span class="line">    <span class="comment">//如果不成功,则说明j已经等于0了,后面给next赋值时就是赋0，说明这一位回退就意味着重新匹配</span></span><br><span class="line">    <span class="keyword">if</span>(p[j + <span class="number">1</span>] == p[i])&#123;</span><br><span class="line">        j ++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//将j赋值给对应next</span></span><br><span class="line">    ne[i] = j;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//kmp匹配过程</span></span><br><span class="line"><span class="comment">//注意：ss为长串,i为长串匹配时的下标（用数组存的,下标从1开始）,m是长串长度</span></span><br><span class="line"><span class="comment">//注意：ps为短串,j为短串匹配时的下标（用数组存的,下标从1开始）（但是初始化为0，每次比较p[j + 1] 和s[i]）</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>, j = <span class="number">0</span>; i &lt;= m; i ++)&#123;</span><br><span class="line">    <span class="comment">//如果j没有回退到起点，而且后面一位的匹配失败，那么就回退</span></span><br><span class="line">    <span class="comment">//直到匹配成功或者回退到原点（重新开始匹配）</span></span><br><span class="line">    <span class="keyword">while</span>(j != <span class="number">0</span> &amp;&amp; p[j + <span class="number">1</span>] != s[i])&#123;</span><br><span class="line">        j = ne[j];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//如果匹配成功就直接j++,由于每次循环i都会自增，所以此时不需要i++</span></span><br><span class="line">    <span class="keyword">if</span>(p[j + <span class="number">1</span>] == s[i])&#123;</span><br><span class="line">        j ++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(j == n)&#123;</span><br><span class="line">        <span class="comment">//匹配成功，输出（输出结果看每道题的要求）</span></span><br><span class="line">        System.out.print(i - n + <span class="string">&quot;&quot;</span>);</span><br><span class="line">        <span class="comment">//回退，寻找下一个匹配的点</span></span><br><span class="line">        j = ne[j];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>算法</category>
-      </categories>
-      <tags>
-        <tag>KMP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>动态规划</title>
     <url>/2021/05/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/</url>
     <content><![CDATA[<p><strong>ps：内容过多，并未完全更新</strong></p>
@@ -142,6 +116,32 @@
       </categories>
       <tags>
         <tag>动态规划</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>KMP</title>
+    <url>/2021/05/27/KMP/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>kmp是一种高效的字符串匹配算法，高效的同时也难理解</p>
+<p>我们要抓住一个点，如何优化暴力匹配</p>
+ <span id="more"></span>
+
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>暴力匹配是容易的</p>
+<p><strong>用s数组存储长串，长度为m，p数组存储短串（模板串），长度为n, 下标均从1开始存储（习惯）</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= m; i ++)&#123;</span><br><span class="line">    <span class="keyword">boolean</span> flag = <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j ++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(s[i] != p[j])&#123;</span><br><span class="line">            flag = <span class="keyword">false</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 只有flag没有被赋成false，才说明完全匹配成功</span></span><br><span class="line">    <span class="keyword">if</span>(flag)&#123;</span><br><span class="line">       <span class="comment">// </span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的是暴力做法，暴力在哪呢，暴力在无论每次匹配后是成功还是失败，都会从下一个坐标完全从0开始匹配！</p>
+<p>KMP就是在这里可以做优化</p>
+<p><img src="https://gitee.com/amazing-feather/images/raw/master/20210527222847.png" alt="image-20210527222847146"></p>
+<p>那么如何预处理出next数组，核心是    <strong>自己与自己匹配</strong></p>
+<p>代码实现中可以先看在next数组已经求出来的情况下正常的长短串匹配的过程</p>
+<p>理解上面的之后可以对比着理解 <strong>如何求出next数组</strong></p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//求next数组(i == 1时就只能从0开始)(自己匹配自己，每次循环有点像dp)</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>, j = <span class="number">0</span>; i &lt;= n; i ++)&#123;</span><br><span class="line">    <span class="comment">//如果一直匹配不到就一直回退，知道匹配成功或者回退到0</span></span><br><span class="line">    <span class="keyword">while</span>(j != <span class="number">0</span> &amp;&amp; p[j + <span class="number">1</span>] != p[i])&#123;</span><br><span class="line">        j = ne[j];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//如果匹配成功,j就加一（因为j是错了一位的，加上1才应该是回退的点，回退的这个点是匹配成功的最后一个字符，由于错了一位，之后回退后，再次匹配就刚好是从这个最后一位成功的下一位开始匹配判断）</span></span><br><span class="line">    <span class="comment">//如果不成功,则说明j已经等于0了,后面给next赋值时就是赋0，说明这一位回退就意味着重新匹配</span></span><br><span class="line">    <span class="keyword">if</span>(p[j + <span class="number">1</span>] == p[i])&#123;</span><br><span class="line">        j ++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//将j赋值给对应next</span></span><br><span class="line">    ne[i] = j;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//kmp匹配过程</span></span><br><span class="line"><span class="comment">//注意：ss为长串,i为长串匹配时的下标（用数组存的,下标从1开始）,m是长串长度</span></span><br><span class="line"><span class="comment">//注意：ps为短串,j为短串匹配时的下标（用数组存的,下标从1开始）（但是初始化为0，每次比较p[j + 1] 和s[i]）</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>, j = <span class="number">0</span>; i &lt;= m; i ++)&#123;</span><br><span class="line">    <span class="comment">//如果j没有回退到起点，而且后面一位的匹配失败，那么就回退</span></span><br><span class="line">    <span class="comment">//直到匹配成功或者回退到原点（重新开始匹配）</span></span><br><span class="line">    <span class="keyword">while</span>(j != <span class="number">0</span> &amp;&amp; p[j + <span class="number">1</span>] != s[i])&#123;</span><br><span class="line">        j = ne[j];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//如果匹配成功就直接j++,由于每次循环i都会自增，所以此时不需要i++</span></span><br><span class="line">    <span class="keyword">if</span>(p[j + <span class="number">1</span>] == s[i])&#123;</span><br><span class="line">        j ++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(j == n)&#123;</span><br><span class="line">        <span class="comment">//匹配成功，输出（输出结果看每道题的要求）</span></span><br><span class="line">        System.out.print(i - n + <span class="string">&quot;&quot;</span>);</span><br><span class="line">        <span class="comment">//回退，寻找下一个匹配的点</span></span><br><span class="line">        j = ne[j];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>KMP</tag>
       </tags>
   </entry>
   <entry>
