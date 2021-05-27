@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>KMP</title>
+    <url>/2021/05/27/KMP/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>kmp是一种高效的字符串匹配算法，高效的同时也难理解</p>
+<p>我们要抓住一个点，如何优化暴力匹配</p>
+ <span id="more"></span>
+
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>暴力匹配是容易的</p>
+<p><strong>用s数组存储长串，长度为m，p数组存储短串（模板串），长度为n, 下标均从1开始存储（习惯）</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= m; i ++)&#123;</span><br><span class="line">    <span class="keyword">boolean</span> flag = <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j ++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(s[i] != p[j])&#123;</span><br><span class="line">            flag = <span class="keyword">false</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 只有flag没有被赋成false，才说明完全匹配成功</span></span><br><span class="line">    <span class="keyword">if</span>(flag)&#123;</span><br><span class="line">       <span class="comment">// </span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的是暴力做法，暴力在哪呢，暴力在无论每次匹配后是成功还是失败，都会从下一个坐标完全从0开始匹配！</p>
+<p>KMP就是在这里可以做优化</p>
+<p><img src="https://gitee.com/amazing-feather/images/raw/master/20210527222847.png" alt="image-20210527222847146"></p>
+<p>那么如何预处理出next数组，核心是    <strong>自己与自己匹配</strong></p>
+<p>代码实现中可以先看在next数组已经求出来的情况下正常的长短串匹配的过程</p>
+<p>理解上面的之后可以对比着理解 <strong>如何求出next数组</strong></p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//求next数组(i == 1时就只能从0开始)(自己匹配自己，每次循环有点像dp)</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>, j = <span class="number">0</span>; i &lt;= n; i ++)&#123;</span><br><span class="line">    <span class="comment">//如果一直匹配不到就一直回退，知道匹配成功或者回退到0</span></span><br><span class="line">    <span class="keyword">while</span>(j != <span class="number">0</span> &amp;&amp; p[j + <span class="number">1</span>] != p[i])&#123;</span><br><span class="line">        j = ne[j];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//如果匹配成功,j就加一（因为j是错了一位的，加上1才应该是回退的点，回退的这个点是匹配成功的最后一个字符，由于错了一位，之后回退后，再次匹配就刚好是从这个最后一位成功的下一位开始匹配判断）</span></span><br><span class="line">    <span class="comment">//如果不成功,则说明j已经等于0了,后面给next赋值时就是赋0，说明这一位回退就意味着重新匹配</span></span><br><span class="line">    <span class="keyword">if</span>(p[j + <span class="number">1</span>] == p[i])&#123;</span><br><span class="line">        j ++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//将j赋值给对应next</span></span><br><span class="line">    ne[i] = j;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//kmp匹配过程</span></span><br><span class="line"><span class="comment">//注意：ss为长串,i为长串匹配时的下标（用数组存的,下标从1开始）,m是长串长度</span></span><br><span class="line"><span class="comment">//注意：ps为短串,j为短串匹配时的下标（用数组存的,下标从1开始）（但是初始化为0，每次比较p[j + 1] 和s[i]）</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>, j = <span class="number">0</span>; i &lt;= m; i ++)&#123;</span><br><span class="line">    <span class="comment">//如果j没有回退到起点，而且后面一位的匹配失败，那么就回退</span></span><br><span class="line">    <span class="comment">//直到匹配成功或者回退到原点（重新开始匹配）</span></span><br><span class="line">    <span class="keyword">while</span>(j != <span class="number">0</span> &amp;&amp; p[j + <span class="number">1</span>] != s[i])&#123;</span><br><span class="line">        j = ne[j];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//如果匹配成功就直接j++,由于每次循环i都会自增，所以此时不需要i++</span></span><br><span class="line">    <span class="keyword">if</span>(p[j + <span class="number">1</span>] == s[i])&#123;</span><br><span class="line">        j ++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(j == n)&#123;</span><br><span class="line">        <span class="comment">//匹配成功，输出（输出结果看每道题的要求）</span></span><br><span class="line">        System.out.print(i - n + <span class="string">&quot;&quot;</span>);</span><br><span class="line">        <span class="comment">//回退，寻找下一个匹配的点</span></span><br><span class="line">        j = ne[j];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>KMP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>动态规划</title>
     <url>/2021/05/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/</url>
     <content><![CDATA[<p><strong>ps：内容过多，并未完全更新</strong></p>
@@ -119,32 +145,6 @@
       </tags>
   </entry>
   <entry>
-    <title>KMP</title>
-    <url>/2021/05/27/KMP/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>kmp是一种高效的字符串匹配算法，高效的同时也难理解</p>
-<p>我们要抓住一个点，如何优化暴力匹配</p>
- <span id="more"></span>
-
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>暴力匹配是容易的</p>
-<p><strong>用s数组存储长串，长度为m，p数组存储短串（模板串），长度为n, 下标均从1开始存储（习惯）</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= m; i ++)&#123;</span><br><span class="line">    <span class="keyword">boolean</span> flag = <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j ++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(s[i] != p[j])&#123;</span><br><span class="line">            flag = <span class="keyword">false</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 只有flag没有被赋成false，才说明完全匹配成功</span></span><br><span class="line">    <span class="keyword">if</span>(flag)&#123;</span><br><span class="line">       <span class="comment">// </span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>上面的是暴力做法，暴力在哪呢，暴力在无论每次匹配后是成功还是失败，都会从下一个坐标完全从0开始匹配！</p>
-<p>KMP就是在这里可以做优化</p>
-<p><img src="https://gitee.com/amazing-feather/images/raw/master/20210527222847.png" alt="image-20210527222847146"></p>
-<p>那么如何预处理出next数组，核心是    <strong>自己与自己匹配</strong></p>
-<p>代码实现中可以先看在next数组已经求出来的情况下正常的长短串匹配的过程</p>
-<p>理解上面的之后可以对比着理解 <strong>如何求出next数组</strong></p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//求next数组(i == 1时就只能从0开始)(自己匹配自己，每次循环有点像dp)</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>, j = <span class="number">0</span>; i &lt;= n; i ++)&#123;</span><br><span class="line">    <span class="comment">//如果一直匹配不到就一直回退，知道匹配成功或者回退到0</span></span><br><span class="line">    <span class="keyword">while</span>(j != <span class="number">0</span> &amp;&amp; p[j + <span class="number">1</span>] != p[i])&#123;</span><br><span class="line">        j = ne[j];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//如果匹配成功,j就加一（因为j是错了一位的，加上1才应该是回退的点，回退的这个点是匹配成功的最后一个字符，由于错了一位，之后回退后，再次匹配就刚好是从这个最后一位成功的下一位开始匹配判断）</span></span><br><span class="line">    <span class="comment">//如果不成功,则说明j已经等于0了,后面给next赋值时就是赋0，说明这一位回退就意味着重新匹配</span></span><br><span class="line">    <span class="keyword">if</span>(p[j + <span class="number">1</span>] == p[i])&#123;</span><br><span class="line">        j ++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//将j赋值给对应next</span></span><br><span class="line">    ne[i] = j;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//kmp匹配过程</span></span><br><span class="line"><span class="comment">//注意：ss为长串,i为长串匹配时的下标（用数组存的,下标从1开始）,m是长串长度</span></span><br><span class="line"><span class="comment">//注意：ps为短串,j为短串匹配时的下标（用数组存的,下标从1开始）（但是初始化为0，每次比较p[j + 1] 和s[i]）</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>, j = <span class="number">0</span>; i &lt;= m; i ++)&#123;</span><br><span class="line">    <span class="comment">//如果j没有回退到起点，而且后面一位的匹配失败，那么就回退</span></span><br><span class="line">    <span class="comment">//直到匹配成功或者回退到原点（重新开始匹配）</span></span><br><span class="line">    <span class="keyword">while</span>(j != <span class="number">0</span> &amp;&amp; p[j + <span class="number">1</span>] != s[i])&#123;</span><br><span class="line">        j = ne[j];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//如果匹配成功就直接j++,由于每次循环i都会自增，所以此时不需要i++</span></span><br><span class="line">    <span class="keyword">if</span>(p[j + <span class="number">1</span>] == s[i])&#123;</span><br><span class="line">        j ++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(j == n)&#123;</span><br><span class="line">        <span class="comment">//匹配成功，输出（输出结果看每道题的要求）</span></span><br><span class="line">        System.out.print(i - n + <span class="string">&quot;&quot;</span>);</span><br><span class="line">        <span class="comment">//回退，寻找下一个匹配的点</span></span><br><span class="line">        j = ne[j];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>算法</category>
-      </categories>
-      <tags>
-        <tag>KMP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>字典树</title>
     <url>/2021/05/27/%E5%AD%97%E5%85%B8%E6%A0%91/</url>
     <content><![CDATA[<p><strong>ps：讲解等待更新，先贴模板</strong></p>
@@ -170,6 +170,41 @@
       </categories>
       <tags>
         <tag>字典树</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>堆</title>
+    <url>/2021/05/25/%E5%A0%86/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>堆以堆顶分为小根堆和大根堆，堆顶是堆中元素的最小值则是小根堆，反之亦然</p>
+<p>以小根堆为例，无论是删除元素，添加元素，<strong>堆都可以保证堆顶是最小值</strong></p>
+<p>这个性质非常巧妙，比如就可以用它来排序，每次取堆顶即可</p>
+<p>要注意的是，堆是以<strong>二叉树</strong>的形式展现的， <strong>父节点是一定小于两个子节点的</strong></p>
+<p>而要实现堆这样的性质，只需要两个操作up 和 down操作即可，具体看代码实现</p>
+ <span id="more"></span>
+
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>用数组h存储堆     <strong>h[0]不存数据 ，h[1]存储根结点</strong></p>
+<p>这样实现的好处在于， 对于h[x]， 左子节点为h[2x]，右子节点为h[2x + 1]</p>
+<p>用一个变量size(一般也会将其命名为 idx) 表示当前堆的大小（使用的空间）</p>
+<blockquote>
+<p>堆所要实现的操作</p>
+<ol>
+<li>插入一个数                    h[size ++] = x; up(size);</li>
+<li>求集合中的最小值         min = h[1];</li>
+<li>删除最小值                     h[1] = h[size]; size - -; down(1);</li>
+<li>删除任意一个元素          h[k] = h[size]; size –; down(k); up(k);</li>
+<li>修改任意一个元素          h[k] = x; down(k); up(k);</li>
+</ol>
+</blockquote>
+<p>接下来以模板题为例，实现堆</p>
+<p><img src="https://gitee.com/amazing-feather/images/raw/master/20210525211507.png" alt="image-20210525211506960"></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> size = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] h = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100001</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//	如果当前不比所有子节点小则下降</span></span><br><span class="line">    <span class="comment">//  x 为 数组下标 </span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">down</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">        <span class="comment">// 比较当前 x 与左右子节点的值    临时变量记录最小的节点</span></span><br><span class="line">        <span class="keyword">int</span> t = x;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 判断最小值</span></span><br><span class="line">        <span class="keyword">if</span>(x * <span class="number">2</span> &lt;= size &amp;&amp; h[x * <span class="number">2</span>] &lt; h[t])&#123;</span><br><span class="line">            t = x * <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 判断最小值</span></span><br><span class="line">        <span class="keyword">if</span>(x * <span class="number">2</span> + <span class="number">1</span> &lt;= size &amp;&amp; h[x * <span class="number">2</span> + <span class="number">1</span>] &lt; h[t])&#123;</span><br><span class="line">            t = x * <span class="number">2</span> + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 如果t不等于x  说明当前这个x位置的值  不满足均小于左右子节点</span></span><br><span class="line">        <span class="keyword">if</span>(t != x)&#123;</span><br><span class="line">            <span class="keyword">int</span> s = h[t];</span><br><span class="line">            h[t] = h[x];</span><br><span class="line">            h[x] = s;</span><br><span class="line">            <span class="comment">// 值进行交换之后，父节点一定是最小值</span></span><br><span class="line">            <span class="comment">// 交换前最小值的位置为t，交换后t位置变为更大的值，递归t位置，让以t为根的子树满足结构</span></span><br><span class="line">            down(t);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//  先看down操作，比较详细</span></span><br><span class="line">    <span class="comment">//	如果比父节点的值小则上浮</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">up</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">        <span class="comment">// 跟down相似，我们可以写出</span></span><br><span class="line">        <span class="keyword">if</span>(x / <span class="number">2</span> &gt; <span class="number">0</span> &amp;&amp; h[x] &lt; h[x / <span class="number">2</span>])&#123;</span><br><span class="line">            <span class="keyword">int</span> s = h[x];</span><br><span class="line">            h[x] = h[x / <span class="number">2</span>];</span><br><span class="line">            h[x / <span class="number">2</span>] = s;</span><br><span class="line">            up(x / <span class="number">2</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 但这里可以有个简化</span></span><br><span class="line">        <span class="comment">// 我们可以观察到如果满足条件只会在调用一次up(x / 2)</span></span><br><span class="line">        <span class="comment">// 而只要有一次不满足条件，后面就不可能再调用</span></span><br><span class="line">        <span class="comment">// 这样我们可以联想到用while循环，如下</span></span><br><span class="line">        <span class="keyword">while</span>(x / <span class="number">2</span> &gt; <span class="number">0</span> &amp;&amp; h[x] &lt; h[x / <span class="number">2</span>])&#123;</span><br><span class="line">            <span class="keyword">int</span> s = h[x];</span><br><span class="line">            h[x] = h[x / <span class="number">2</span>];</span><br><span class="line">            h[x / <span class="number">2</span>] = s;</span><br><span class="line">            <span class="comment">// 每次除2即可</span></span><br><span class="line">            x /= <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="keyword">int</span> n = sc.nextInt(), m = sc.nextInt();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i ++)&#123;</span><br><span class="line">            h[i] = sc.nextInt();</span><br><span class="line">        &#125;</span><br><span class="line">        size = n;</span><br><span class="line">        <span class="comment">// 每次 down和up 时间复杂度为logn   因为每次只对树的一层进行操作，一共有logn层</span></span><br><span class="line">        <span class="comment">// O(n) 的建堆方式 朴素建堆方式为O(nlogn)</span></span><br><span class="line">        <span class="comment">// 原理自行百度 （我不知道哈哈哈）</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = n / <span class="number">2</span>; i &gt; <span class="number">0</span>; i --)&#123;</span><br><span class="line">            down(i);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//每次输出根结点并且删除后继续输出</span></span><br><span class="line">        <span class="keyword">while</span>(m -- != <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="comment">// 输出堆顶</span></span><br><span class="line">            System.out.print(h[<span class="number">1</span>] + <span class="string">&quot; &quot;</span>);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 删除堆顶</span></span><br><span class="line">            h[<span class="number">1</span>] = h[size];</span><br><span class="line">            size --;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 此时最后的元素放在了堆顶, 只可能下沉</span></span><br><span class="line">            down(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
+      <tags>
+        <tag>堆</tag>
       </tags>
   </entry>
   <entry>
@@ -256,41 +291,6 @@
       <tags>
         <tag>架构</tag>
         <tag>java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>堆</title>
-    <url>/2021/05/25/%E5%A0%86/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>堆以堆顶分为小根堆和大根堆，堆顶是堆中元素的最小值则是小根堆，反之亦然</p>
-<p>以小根堆为例，无论是删除元素，添加元素，<strong>堆都可以保证堆顶是最小值</strong></p>
-<p>这个性质非常巧妙，比如就可以用它来排序，每次取堆顶即可</p>
-<p>要注意的是，堆是以<strong>二叉树</strong>的形式展现的， <strong>父节点是一定小于两个子节点的</strong></p>
-<p>而要实现堆这样的性质，只需要两个操作up 和 down操作即可，具体看代码实现</p>
- <span id="more"></span>
-
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>用数组h存储堆     <strong>h[0]不存数据 ，h[1]存储根结点</strong></p>
-<p>这样实现的好处在于， 对于h[x]， 左子节点为h[2x]，右子节点为h[2x + 1]</p>
-<p>用一个变量size(一般也会将其命名为 idx) 表示当前堆的大小（使用的空间）</p>
-<blockquote>
-<p>堆所要实现的操作</p>
-<ol>
-<li>插入一个数                    h[size ++] = x; up(size);</li>
-<li>求集合中的最小值         min = h[1];</li>
-<li>删除最小值                     h[1] = h[size]; size - -; down(1);</li>
-<li>删除任意一个元素          h[k] = h[size]; size –; down(k); up(k);</li>
-<li>修改任意一个元素          h[k] = x; down(k); up(k);</li>
-</ol>
-</blockquote>
-<p>接下来以模板题为例，实现堆</p>
-<p><img src="https://gitee.com/amazing-feather/images/raw/master/20210525211507.png" alt="image-20210525211506960"></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> size = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] h = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100001</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//	如果当前不比所有子节点小则下降</span></span><br><span class="line">    <span class="comment">//  x 为 数组下标 </span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">down</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">        <span class="comment">// 比较当前 x 与左右子节点的值    临时变量记录最小的节点</span></span><br><span class="line">        <span class="keyword">int</span> t = x;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 判断最小值</span></span><br><span class="line">        <span class="keyword">if</span>(x * <span class="number">2</span> &lt;= size &amp;&amp; h[x * <span class="number">2</span>] &lt; h[t])&#123;</span><br><span class="line">            t = x * <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 判断最小值</span></span><br><span class="line">        <span class="keyword">if</span>(x * <span class="number">2</span> + <span class="number">1</span> &lt;= size &amp;&amp; h[x * <span class="number">2</span> + <span class="number">1</span>] &lt; h[t])&#123;</span><br><span class="line">            t = x * <span class="number">2</span> + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 如果t不等于x  说明当前这个x位置的值  不满足均小于左右子节点</span></span><br><span class="line">        <span class="keyword">if</span>(t != x)&#123;</span><br><span class="line">            <span class="keyword">int</span> s = h[t];</span><br><span class="line">            h[t] = h[x];</span><br><span class="line">            h[x] = s;</span><br><span class="line">            <span class="comment">// 值进行交换之后，父节点一定是最小值</span></span><br><span class="line">            <span class="comment">// 交换前最小值的位置为t，交换后t位置变为更大的值，递归t位置，让以t为根的子树满足结构</span></span><br><span class="line">            down(t);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//  先看down操作，比较详细</span></span><br><span class="line">    <span class="comment">//	如果比父节点的值小则上浮</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">up</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">        <span class="comment">// 跟down相似，我们可以写出</span></span><br><span class="line">        <span class="keyword">if</span>(x / <span class="number">2</span> &gt; <span class="number">0</span> &amp;&amp; h[x] &lt; h[x / <span class="number">2</span>])&#123;</span><br><span class="line">            <span class="keyword">int</span> s = h[x];</span><br><span class="line">            h[x] = h[x / <span class="number">2</span>];</span><br><span class="line">            h[x / <span class="number">2</span>] = s;</span><br><span class="line">            up(x / <span class="number">2</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 但这里可以有个简化</span></span><br><span class="line">        <span class="comment">// 我们可以观察到如果满足条件只会在调用一次up(x / 2)</span></span><br><span class="line">        <span class="comment">// 而只要有一次不满足条件，后面就不可能再调用</span></span><br><span class="line">        <span class="comment">// 这样我们可以联想到用while循环，如下</span></span><br><span class="line">        <span class="keyword">while</span>(x / <span class="number">2</span> &gt; <span class="number">0</span> &amp;&amp; h[x] &lt; h[x / <span class="number">2</span>])&#123;</span><br><span class="line">            <span class="keyword">int</span> s = h[x];</span><br><span class="line">            h[x] = h[x / <span class="number">2</span>];</span><br><span class="line">            h[x / <span class="number">2</span>] = s;</span><br><span class="line">            <span class="comment">// 每次除2即可</span></span><br><span class="line">            x /= <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="keyword">int</span> n = sc.nextInt(), m = sc.nextInt();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i ++)&#123;</span><br><span class="line">            h[i] = sc.nextInt();</span><br><span class="line">        &#125;</span><br><span class="line">        size = n;</span><br><span class="line">        <span class="comment">// 每次 down和up 时间复杂度为logn   因为每次只对树的一层进行操作，一共有logn层</span></span><br><span class="line">        <span class="comment">// O(n) 的建堆方式 朴素建堆方式为O(nlogn)</span></span><br><span class="line">        <span class="comment">// 原理自行百度 （我不知道哈哈哈）</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = n / <span class="number">2</span>; i &gt; <span class="number">0</span>; i --)&#123;</span><br><span class="line">            down(i);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//每次输出根结点并且删除后继续输出</span></span><br><span class="line">        <span class="keyword">while</span>(m -- != <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="comment">// 输出堆顶</span></span><br><span class="line">            System.out.print(h[<span class="number">1</span>] + <span class="string">&quot; &quot;</span>);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 删除堆顶</span></span><br><span class="line">            h[<span class="number">1</span>] = h[size];</span><br><span class="line">            size --;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 此时最后的元素放在了堆顶, 只可能下沉</span></span><br><span class="line">            down(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>数据结构</category>
-      </categories>
-      <tags>
-        <tag>堆</tag>
       </tags>
   </entry>
 </search>
