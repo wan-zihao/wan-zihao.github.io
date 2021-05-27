@@ -133,6 +133,16 @@
     <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">7</span></a>
 
   </li>
+        <li class="menu-item menu-item-message">
+
+    <a href="/message/" rel="section"><i class="fa fa-sticky-note fa-fw"></i>留言</a>
+
+  </li>
+        <li class="menu-item menu-item-nav">
+
+    <a href="/nav/" rel="section"><i class="fa fa-share fa-fw"></i>导航</a>
+
+  </li>
         <li class="menu-item menu-item-about">
 
     <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
@@ -379,7 +389,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-05-27 09:27:49 / 修改时间：09:31:35" itemprop="dateCreated datePublished" datetime="2021-05-27T09:27:49+08:00">2021-05-27</time>
+              <time title="创建时间：2021-05-27 09:27:49 / 修改时间：23:51:19" itemprop="dateCreated datePublished" datetime="2021-05-27T09:27:49+08:00">2021-05-27</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -409,13 +419,13 @@
 <p>v[i]是第 i 件物品的体积</p>
 <p>w[i]是第 i 件物品的价值</p>
 <p>状态划分</p>
-<p>f[i][j]划分为 ==没有选择第 i 个物品==和==选择了第 i 个物品==</p>
+<p>f[i][j]划分为 <code>没有选择第 i 个物品</code>和<code>选择了第 i 个物品</code></p>
 <p><strong>状态转移方程</strong></p>
-<p>f[i][j] = Math.max(==f[ i - 1 ] [ j ]== , ==f[ i ][ j - v[i] ] +  w[i]==)</p>
+<p>f[i][j] = Math.max(<code>f[i - 1][j] </code>, <code>f[i][j - v[i]] +  w[i]</code>)</p>
 <p><strong>一维优化</strong></p>
 <p>注意点</p>
 <p>由于只与 i 只与 上一层 i - 1有关，所以可以直接删去第一维</p>
-<p>但是注意取最大值时的==f[j - v[i]]==等价的是==f[i][j - v[i]]==， 而不是==f[i - 1][j - v[i]]==</p>
+<p>但是注意取最大值时的<code>f[j - v[i]]</code>等价的是<code>f[i][j - v[i]]</code>， 而不是<code>f[i - 1]\[j - v[i]]</code></p>
 <p>原因是计算第 i 层时，已经将 j - v[i]  更新过了，而我们要的是第i - 1层的（也就是没有被更新过的）,所以f[j - v[i]]已经在了第 i 层</p>
 <p>解决办法就是从大到小枚举 j </p>
 </blockquote>
