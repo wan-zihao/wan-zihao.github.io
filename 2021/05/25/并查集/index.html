@@ -20,18 +20,20 @@
     var CONFIG = {"hostname":"raindown.top","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="生于黑暗 追逐光明">
+  <meta name="description" content="概述并查集主要用于解决一些元素分组的问题。它管理一系列不相交的集合，并支持两种操作  合并（Union）：把两个不相交的集合合并为一个集合 查询（Find）：查询两个元素是否在同一个集合中  基本原理每个集合用树来表示，树根的编号就是整个集合的编号 每个节点存储父节点的位置，p[x] 表示 x 的父节点的下标 当 x &#x3D; p[x] 时，说明当前节点就是树根，值也就是集合编号 路径压缩 对于任意一个">
 <meta property="og:type" content="article">
 <meta property="og:title" content="并查集">
 <meta property="og:url" content="http://raindown.top/2021/05/25/%E5%B9%B6%E6%9F%A5%E9%9B%86/index.html">
 <meta property="og:site_name" content="雨落">
-<meta property="og:description" content="生于黑暗 追逐光明">
+<meta property="og:description" content="概述并查集主要用于解决一些元素分组的问题。它管理一系列不相交的集合，并支持两种操作  合并（Union）：把两个不相交的集合合并为一个集合 查询（Find）：查询两个元素是否在同一个集合中  基本原理每个集合用树来表示，树根的编号就是整个集合的编号 每个节点存储父节点的位置，p[x] 表示 x 的父节点的下标 当 x &#x3D; p[x] 时，说明当前节点就是树根，值也就是集合编号 路径压缩 对于任意一个">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/amazing-feather/images/raw/master/20210527084012.png">
 <meta property="article:published_time" content="2021-05-25T11:18:01.000Z">
-<meta property="article:modified_time" content="2021-05-25T14:16:20.036Z">
+<meta property="article:modified_time" content="2021-05-27T00:45:22.379Z">
 <meta property="article:author" content="惊鸿之羽">
 <meta property="article:tag" content="并查集">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/amazing-feather/images/raw/master/20210527084012.png">
 
 <link rel="canonical" href="http://raindown.top/2021/05/25/%E5%B9%B6%E6%9F%A5%E9%9B%86/">
 
@@ -220,10 +222,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-05-25 19:18:01 / 修改时间：22:16:20" itemprop="dateCreated datePublished" datetime="2021-05-25T19:18:01+08:00">2021-05-25</time>
+              <time title="创建时间：2021-05-25 19:18:01" itemprop="dateCreated datePublished" datetime="2021-05-25T19:18:01+08:00">2021-05-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-27 08:45:22" itemprop="dateModified" datetime="2021-05-27T08:45:22+08:00">2021-05-27</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -252,7 +260,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>并查集主要用于解决一些<strong>元素分组</strong>的问题。它管理一系列<strong>不相交的集合</strong>，并支持两种操作</p>
+<ul>
+<li><strong>合并</strong>（Union）：把两个不相交的集合合并为一个集合</li>
+<li><strong>查询</strong>（Find）：查询两个元素是否在同一个集合中</li>
+</ul>
+<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>每个集合用树来表示，树根的编号就是整个集合的编号</p>
+<p>每个节点存储父节点的位置，p[x] 表示 x 的父节点的下标</p>
+<p>当 x = p[x] 时，说明当前节点就是树根，值也就是集合编号</p>
+<p><strong>路径压缩</strong></p>
+<p>对于任意一个元素 x ，在一层一层查找其父节点时，直接让路径上的所有点直接指向树根，让查找的时间复杂度降低O(1)，总体上近似O(1)</p>
+ <span id="more"></span>
+
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>1.如何判断树根</p>
+<p><strong>if (p[x] == x)</strong></p>
+<p>2.如何求 x 的集合编号</p>
+<p><strong>while (p[x] != x) x = p[x]</strong></p>
+<p>3.如何合并两个集合</p>
+<p>假如已经找到了树根    <strong>p[x] 是 x 的集合编号，p[y] 是 y 的集合编号</strong></p>
+<p>合并操作 : <strong>p[x] = y</strong></p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p><img src="https://gitee.com/amazing-feather/images/raw/master/20210527084012.png" alt="image-20210527084012105"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原题链接:https://www.acwing.com/problem/content/838/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 存放每个值的集合编号</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] p = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100001</span>];</span><br><span class="line">    <span class="comment">// 存放当前集合的元素数量（每次合并只更改根结点也就是对应集合编号的点的值）</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] size = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100001</span>];</span><br><span class="line">    <span class="comment">// 对给定数a 求a所在的集合的元素数量 --&gt; size[find(a)]</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//find函数 找到元素的集合编号</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(p[x] != x) &#123;</span><br><span class="line">            <span class="comment">// 路径压缩</span></span><br><span class="line">            p[x] = find(p[x]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p[x];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="keyword">int</span> n = sc.nextInt(), m = sc.nextInt();</span><br><span class="line">        <span class="comment">// 并查集的初始化</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n; i ++)&#123;</span><br><span class="line">            p[i] = i;</span><br><span class="line">            size[i] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(m -- != <span class="number">0</span>)&#123;</span><br><span class="line">            String s = sc.next();</span><br><span class="line">            <span class="keyword">int</span> a = sc.nextInt(), b = sc.nextInt();</span><br><span class="line">            <span class="keyword">if</span>(<span class="string">&quot;M&quot;</span>.equals(s))&#123;</span><br><span class="line">                <span class="comment">// 如果已经在同一个集合就不需要操作</span></span><br><span class="line">                <span class="keyword">if</span>(find(a) == find(b))&#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 改变集合大小(只改变根结点的值)</span></span><br><span class="line">                size[find(b)] += size[find(a)];</span><br><span class="line">                <span class="comment">// 合并两个集合</span></span><br><span class="line">                p[find(a)] = find(b);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="comment">// 判断两个数是否在同一个集合</span></span><br><span class="line">                <span class="keyword">if</span>(find(a) != find(b))&#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;No&quot;</span>);</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;Yes&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
     </div>
 
     
@@ -340,6 +369,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">基本原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.</span> <span class="nav-text">代码实现</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
