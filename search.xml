@@ -145,6 +145,35 @@
       </tags>
   </entry>
   <entry>
+    <title>双指针</title>
+    <url>/2021/05/30/%E5%8F%8C%E6%8C%87%E9%92%88/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>双指针</strong>，指的是在遍历对象的过程中，不是普通的使用单个指针进行访问，而是使用两个相同方向（<em>快慢指针</em>）或者相反方向（<em>对撞指针</em>）的指针进行扫描，从而达到相应的目的。</p>
+ <span id="more"></span>
+
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><h3 id="最长连续不重复子序列"><a href="#最长连续不重复子序列" class="headerlink" title="最长连续不重复子序列"></a>最长连续不重复子序列</h3><blockquote>
+<p>给定一个长度为 n 的整数序列，请找出最长的不包含重复的数的连续区间，输出它的长度。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">int</span>[] hash = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100001</span>];</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">    Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">    <span class="keyword">int</span> n = sc.nextInt();</span><br><span class="line">    <span class="keyword">int</span>[] arr = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i ++) &#123;</span><br><span class="line">        arr[i] = sc.nextInt();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> max = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// i 表示 以 i 结尾的最长连续不重复子序列的长度</span></span><br><span class="line">    <span class="comment">// j 表示左指针</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>; i &lt; n; i ++) &#123;</span><br><span class="line">        <span class="comment">// 动态存储值的数量</span></span><br><span class="line">        hash[arr[i]] ++;</span><br><span class="line">        <span class="comment">// 因为上一次的i 和 j 已经满足连续不重复子序列</span></span><br><span class="line">        <span class="comment">// 所以如果在 i ++ 之后出现重复则一定是arr[i]重复了</span></span><br><span class="line">        <span class="comment">// 为了不重复，而且 i 已经固定, 只能将 j 后移</span></span><br><span class="line">        <span class="keyword">while</span>(hash[arr[i]] &gt; <span class="number">1</span>)&#123;</span><br><span class="line">            hash[arr[j]] --;</span><br><span class="line">            j ++;</span><br><span class="line">        &#125;</span><br><span class="line">        max = Math.max(max, i - j + <span class="number">1</span>);</span><br><span class="line">        <span class="comment">// 注意每个i结束时不需要更新j</span></span><br><span class="line">        <span class="comment">// 因为已经是最长连续不重复子序列了， 往前更新j是必定会有重复的</span></span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(max);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="数组元素的目标和"><a href="#数组元素的目标和" class="headerlink" title="数组元素的目标和"></a>数组元素的目标和</h3><blockquote>
+<p>给定两个升序排序的有序数组 A 和 B，以及一个目标值 x。</p>
+<p>数组下标从 0 开始。</p>
+<p>请你求出满足 A[i]+B[j]=x 的数对 (i,j)。</p>
+<p>数据保证有唯一解。</p>
+</blockquote>
+<p>注意单调性</p>
+<p>i 从 A 数组的最前面开始往后走</p>
+<p>当 i 往后走时，j 只能往前走，所以 j 是从 B 数组的最后面开始走</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 时间复杂度O(n + m)</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>, j = m - <span class="number">1</span>; i &lt; n; i ++)&#123;</span><br><span class="line">    <span class="keyword">while</span>(j &gt;= <span class="number">0</span> &amp;&amp; a[i] + b[j] &gt; x)&#123;</span><br><span class="line">        j --;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(j &gt;= <span class="number">0</span> &amp;&amp; a[i] + b[j] == x)&#123;</span><br><span class="line">        System.out.println(i + <span class="string">&quot; &quot;</span> + j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>双指针</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>堆</title>
     <url>/2021/05/25/%E5%A0%86/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>堆以堆顶分为小根堆和大根堆，堆顶是堆中元素的最小值则是小根堆，反之亦然</p>
@@ -177,35 +206,6 @@
       </categories>
       <tags>
         <tag>堆</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>双指针</title>
-    <url>/2021/05/30/%E5%8F%8C%E6%8C%87%E9%92%88/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>双指针</strong>，指的是在遍历对象的过程中，不是普通的使用单个指针进行访问，而是使用两个相同方向（<em>快慢指针</em>）或者相反方向（<em>对撞指针</em>）的指针进行扫描，从而达到相应的目的。</p>
- <span id="more"></span>
-
-<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><h3 id="最长连续不重复子序列"><a href="#最长连续不重复子序列" class="headerlink" title="最长连续不重复子序列"></a>最长连续不重复子序列</h3><blockquote>
-<p>给定一个长度为 n 的整数序列，请找出最长的不包含重复的数的连续区间，输出它的长度。</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">int</span>[] hash = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100001</span>];</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">    Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">    <span class="keyword">int</span> n = sc.nextInt();</span><br><span class="line">    <span class="keyword">int</span>[] arr = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i ++) &#123;</span><br><span class="line">        arr[i] = sc.nextInt();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> max = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// i 表示 以 i 结尾的最长连续不重复子序列的长度</span></span><br><span class="line">    <span class="comment">// j 表示左指针</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>; i &lt; n; i ++) &#123;</span><br><span class="line">        <span class="comment">// 动态存储值的数量</span></span><br><span class="line">        hash[arr[i]] ++;</span><br><span class="line">        <span class="comment">// 因为上一次的i 和 j 已经满足连续不重复子序列</span></span><br><span class="line">        <span class="comment">// 所以如果在 i ++ 之后出现重复则一定是arr[i]重复了</span></span><br><span class="line">        <span class="comment">// 为了不重复，而且 i 已经固定, 只能将 j 后移</span></span><br><span class="line">        <span class="keyword">while</span>(hash[arr[i]] &gt; <span class="number">1</span>)&#123;</span><br><span class="line">            hash[arr[j]] --;</span><br><span class="line">            j ++;</span><br><span class="line">        &#125;</span><br><span class="line">        max = Math.max(max, i - j + <span class="number">1</span>);</span><br><span class="line">        <span class="comment">// 注意每个i结束时不需要更新j</span></span><br><span class="line">        <span class="comment">// 因为已经是最长连续不重复子序列了， 往前更新j是必定会有重复的</span></span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(max);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="数组元素的目标和"><a href="#数组元素的目标和" class="headerlink" title="数组元素的目标和"></a>数组元素的目标和</h3><blockquote>
-<p>给定两个升序排序的有序数组 A 和 B，以及一个目标值 x。</p>
-<p>数组下标从 0 开始。</p>
-<p>请你求出满足 A[i]+B[j]=x 的数对 (i,j)。</p>
-<p>数据保证有唯一解。</p>
-</blockquote>
-<p>注意单调性</p>
-<p>i 从 A 数组的最前面开始往后走</p>
-<p>当 i 往后走时，j 只能往前走，所以 j 是从 B 数组的最后面开始走</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 时间复杂度O(n + m)</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>, j = m - <span class="number">1</span>; i &lt; n; i ++)&#123;</span><br><span class="line">    <span class="keyword">while</span>(j &gt;= <span class="number">0</span> &amp;&amp; a[i] + b[j] &gt; x)&#123;</span><br><span class="line">        j --;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(j &gt;= <span class="number">0</span> &amp;&amp; a[i] + b[j] == x)&#123;</span><br><span class="line">        System.out.println(i + <span class="string">&quot; &quot;</span> + j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>算法</category>
-      </categories>
-      <tags>
-        <tag>双指针</tag>
       </tags>
   </entry>
   <entry>
@@ -353,6 +353,25 @@
 <h2 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h2><p>其实就是给对象提供一个clone方法克隆出新对象</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MilkTea</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 口味类型</span></span><br><span class="line">    <span class="keyword">private</span> String type;</span><br><span class="line">    <span class="comment">// 是否加冰</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> ice;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    克隆当前实例</span></span><br><span class="line"><span class="comment">    ps： 如下重写clone方法是无法克隆非基本类型的（会直接引用当前的）（浅拷贝），需要自行修改</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> MilkTea <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (MilkTea) <span class="keyword">super</span>.clone();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<h1 id="结构型模式"><a href="#结构型模式" class="headerlink" title="结构型模式"></a>结构型模式</h1><h2 id="适配器模式"><a href="#适配器模式" class="headerlink" title="适配器模式"></a>适配器模式</h2><p>适配器模式适用于有<strong>相关性但不兼容的结构</strong>，源接口通过一个中间件（适配器）转换后才可以适用于目标接口</p>
+<p>下面是usb用家庭电源充电的例子</p>
+<p>家庭电源的提供的电压是220V，但是USB只能适用用5V的输入，这样我们就必须将家庭电源提供的220V转换成5V以给USB使用，所以这中间要多一次转换电压的操作，这个操作就是用适配器来完成</p>
+<p><strong>家庭电源提供220V电压</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HomeBattery</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 提供220V电压</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">supply</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">220</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>USB充电</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">USBLine</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">charge</span><span class="params">(<span class="keyword">int</span> volt)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (volt != <span class="number">5</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;只能接收5V的电压&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;正在充电&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>适配器</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Adapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 适配</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">convert</span> <span class="params">(<span class="keyword">int</span> homevolt)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> chargeVolt = homevolt - <span class="number">215</span>;</span><br><span class="line">        <span class="keyword">return</span> chargeVolt;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>用户给USB充电</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 充电测试</span></span><br><span class="line">        chargeForPhone();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">chargeForPhone</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        HomeBattery homeBattery = <span class="keyword">new</span> HomeBattery();</span><br><span class="line">        <span class="comment">// 家庭电源的提供的电压</span></span><br><span class="line">        <span class="keyword">int</span> homeVolt = homeBattery.supply();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 适配</span></span><br><span class="line">        Adapter adapter = <span class="keyword">new</span> Adapter();</span><br><span class="line">        <span class="keyword">int</span> chargeVolt = adapter.convert(homeVolt);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 充电</span></span><br><span class="line">        USBLine usbLine = <span class="keyword">new</span> USBLine();</span><br><span class="line">        usbLine.charge(chargeVolt);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>运行输出：正在充电</p>
+<p>如果没有做适配，运行会报错，错误信息：只能接收5V的电压</p>
+</blockquote>
 ]]></content>
       <categories>
         <category>设计</category>
