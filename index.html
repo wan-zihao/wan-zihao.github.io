@@ -615,10 +615,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-05-27 09:27:49 / 修改时间：23:51:19" itemprop="dateCreated datePublished" datetime="2021-05-27T09:27:49+08:00">2021-05-27</time>
+              <time title="创建时间：2021-05-27 09:27:49" itemprop="dateCreated datePublished" datetime="2021-05-27T09:27:49+08:00">2021-05-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-31 16:26:46" itemprop="dateModified" datetime="2021-05-31T16:26:46+08:00">2021-05-31</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -649,11 +655,11 @@
 <p>状态划分</p>
 <p>f[i][j]划分为 <code>没有选择第 i 个物品</code>和<code>选择了第 i 个物品</code></p>
 <p><strong>状态转移方程</strong></p>
-<p>f[i][j] = Math.max(<code>f[i - 1][j] </code>, <code>f[i][j - v[i]] +  w[i]</code>)</p>
+<p>f[i][j] = Math.max(<code>f[i - 1][j] </code>, <code>f[i - 1][j - v[i]] +  w[i]</code>)</p>
 <p><strong>一维优化</strong></p>
 <p>注意点</p>
 <p>由于只与 i 只与 上一层 i - 1有关，所以可以直接删去第一维</p>
-<p>但是注意取最大值时的<code>f[j - v[i]]</code>等价的是<code>f[i][j - v[i]]</code>， 而不是<code>f[i - 1]\[j - v[i]]</code></p>
+<p>但是注意取最大值时的<code>f[j - v[i]]</code>等价的是<code>f[i][j - v[i]]</code>， 而不是<code>f[i - 1][j - v[i]]</code></p>
 <p>原因是计算第 i 层时，已经将 j - v[i]  更新过了，而我们要的是第i - 1层的（也就是没有被更新过的）,所以f[j - v[i]]已经在了第 i 层</p>
 <p>解决办法就是从大到小枚举 j </p>
 </blockquote>
