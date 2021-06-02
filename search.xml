@@ -145,6 +145,35 @@
       </tags>
   </entry>
   <entry>
+    <title>双指针</title>
+    <url>/2021/05/30/%E5%8F%8C%E6%8C%87%E9%92%88/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>双指针</strong>，指的是在遍历对象的过程中，不是普通的使用单个指针进行访问，而是使用两个相同方向（<em>快慢指针</em>）或者相反方向（<em>对撞指针</em>）的指针进行扫描，从而达到相应的目的。</p>
+ <span id="more"></span>
+
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><h3 id="最长连续不重复子序列"><a href="#最长连续不重复子序列" class="headerlink" title="最长连续不重复子序列"></a>最长连续不重复子序列</h3><blockquote>
+<p>给定一个长度为 n 的整数序列，请找出最长的不包含重复的数的连续区间，输出它的长度。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">int</span>[] hash = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100001</span>];</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">    Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">    <span class="keyword">int</span> n = sc.nextInt();</span><br><span class="line">    <span class="keyword">int</span>[] arr = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i ++) &#123;</span><br><span class="line">        arr[i] = sc.nextInt();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> max = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// i 表示 以 i 结尾的最长连续不重复子序列的长度</span></span><br><span class="line">    <span class="comment">// j 表示左指针</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>; i &lt; n; i ++) &#123;</span><br><span class="line">        <span class="comment">// 动态存储值的数量</span></span><br><span class="line">        hash[arr[i]] ++;</span><br><span class="line">        <span class="comment">// 因为上一次的i 和 j 已经满足连续不重复子序列</span></span><br><span class="line">        <span class="comment">// 所以如果在 i ++ 之后出现重复则一定是arr[i]重复了</span></span><br><span class="line">        <span class="comment">// 为了不重复，而且 i 已经固定, 只能将 j 后移</span></span><br><span class="line">        <span class="keyword">while</span>(hash[arr[i]] &gt; <span class="number">1</span>)&#123;</span><br><span class="line">            hash[arr[j]] --;</span><br><span class="line">            j ++;</span><br><span class="line">        &#125;</span><br><span class="line">        max = Math.max(max, i - j + <span class="number">1</span>);</span><br><span class="line">        <span class="comment">// 注意每个i结束时不需要更新j</span></span><br><span class="line">        <span class="comment">// 因为已经是最长连续不重复子序列了， 往前更新j是必定会有重复的</span></span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(max);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="数组元素的目标和"><a href="#数组元素的目标和" class="headerlink" title="数组元素的目标和"></a>数组元素的目标和</h3><blockquote>
+<p>给定两个升序排序的有序数组 A 和 B，以及一个目标值 x。</p>
+<p>数组下标从 0 开始。</p>
+<p>请你求出满足 A[i]+B[j]=x 的数对 (i,j)。</p>
+<p>数据保证有唯一解。</p>
+</blockquote>
+<p>注意单调性</p>
+<p>i 从 A 数组的最前面开始往后走</p>
+<p>当 i 往后走时，j 只能往前走，所以 j 是从 B 数组的最后面开始走</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 时间复杂度O(n + m)</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>, j = m - <span class="number">1</span>; i &lt; n; i ++)&#123;</span><br><span class="line">    <span class="keyword">while</span>(j &gt;= <span class="number">0</span> &amp;&amp; a[i] + b[j] &gt; x)&#123;</span><br><span class="line">        j --;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(j &gt;= <span class="number">0</span> &amp;&amp; a[i] + b[j] == x)&#123;</span><br><span class="line">        System.out.println(i + <span class="string">&quot; &quot;</span> + j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>双指针</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>堆</title>
     <url>/2021/05/25/%E5%A0%86/</url>
     <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>堆以堆顶分为小根堆和大根堆，堆顶是堆中元素的最小值则是小根堆，反之亦然</p>
@@ -180,35 +209,6 @@
       </tags>
   </entry>
   <entry>
-    <title>双指针</title>
-    <url>/2021/05/30/%E5%8F%8C%E6%8C%87%E9%92%88/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>双指针</strong>，指的是在遍历对象的过程中，不是普通的使用单个指针进行访问，而是使用两个相同方向（<em>快慢指针</em>）或者相反方向（<em>对撞指针</em>）的指针进行扫描，从而达到相应的目的。</p>
- <span id="more"></span>
-
-<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><h3 id="最长连续不重复子序列"><a href="#最长连续不重复子序列" class="headerlink" title="最长连续不重复子序列"></a>最长连续不重复子序列</h3><blockquote>
-<p>给定一个长度为 n 的整数序列，请找出最长的不包含重复的数的连续区间，输出它的长度。</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">int</span>[] hash = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100001</span>];</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">    Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">    <span class="keyword">int</span> n = sc.nextInt();</span><br><span class="line">    <span class="keyword">int</span>[] arr = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i ++) &#123;</span><br><span class="line">        arr[i] = sc.nextInt();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> max = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// i 表示 以 i 结尾的最长连续不重复子序列的长度</span></span><br><span class="line">    <span class="comment">// j 表示左指针</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>; i &lt; n; i ++) &#123;</span><br><span class="line">        <span class="comment">// 动态存储值的数量</span></span><br><span class="line">        hash[arr[i]] ++;</span><br><span class="line">        <span class="comment">// 因为上一次的i 和 j 已经满足连续不重复子序列</span></span><br><span class="line">        <span class="comment">// 所以如果在 i ++ 之后出现重复则一定是arr[i]重复了</span></span><br><span class="line">        <span class="comment">// 为了不重复，而且 i 已经固定, 只能将 j 后移</span></span><br><span class="line">        <span class="keyword">while</span>(hash[arr[i]] &gt; <span class="number">1</span>)&#123;</span><br><span class="line">            hash[arr[j]] --;</span><br><span class="line">            j ++;</span><br><span class="line">        &#125;</span><br><span class="line">        max = Math.max(max, i - j + <span class="number">1</span>);</span><br><span class="line">        <span class="comment">// 注意每个i结束时不需要更新j</span></span><br><span class="line">        <span class="comment">// 因为已经是最长连续不重复子序列了， 往前更新j是必定会有重复的</span></span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(max);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="数组元素的目标和"><a href="#数组元素的目标和" class="headerlink" title="数组元素的目标和"></a>数组元素的目标和</h3><blockquote>
-<p>给定两个升序排序的有序数组 A 和 B，以及一个目标值 x。</p>
-<p>数组下标从 0 开始。</p>
-<p>请你求出满足 A[i]+B[j]=x 的数对 (i,j)。</p>
-<p>数据保证有唯一解。</p>
-</blockquote>
-<p>注意单调性</p>
-<p>i 从 A 数组的最前面开始往后走</p>
-<p>当 i 往后走时，j 只能往前走，所以 j 是从 B 数组的最后面开始走</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 时间复杂度O(n + m)</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>, j = m - <span class="number">1</span>; i &lt; n; i ++)&#123;</span><br><span class="line">    <span class="keyword">while</span>(j &gt;= <span class="number">0</span> &amp;&amp; a[i] + b[j] &gt; x)&#123;</span><br><span class="line">        j --;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(j &gt;= <span class="number">0</span> &amp;&amp; a[i] + b[j] == x)&#123;</span><br><span class="line">        System.out.println(i + <span class="string">&quot; &quot;</span> + j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>算法</category>
-      </categories>
-      <tags>
-        <tag>双指针</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>字典树</title>
     <url>/2021/05/27/%E5%AD%97%E5%85%B8%E6%A0%91/</url>
     <content><![CDATA[<p><strong>ps：讲解等待更新，先贴模板</strong></p>
@@ -234,6 +234,61 @@
       </categories>
       <tags>
         <tag>字典树</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>并查集</title>
+    <url>/2021/05/25/%E5%B9%B6%E6%9F%A5%E9%9B%86/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>并查集主要用于解决一些<strong>元素分组</strong>的问题。它管理一系列<strong>不相交的集合</strong>，并支持两种操作</p>
+<ul>
+<li><strong>合并</strong>（Union）：把两个不相交的集合合并为一个集合</li>
+<li><strong>查询</strong>（Find）：查询两个元素是否在同一个集合中</li>
+</ul>
+<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>每个集合用树来表示，树根的编号就是整个集合的编号</p>
+<p>每个节点存储父节点的位置，p[x] 表示 x 的父节点的下标</p>
+<p>当 x = p[x] 时，说明当前节点就是树根，值也就是集合编号</p>
+<p><strong>路径压缩</strong></p>
+<p>对于任意一个元素 x ，在一层一层查找其父节点时，直接让路径上的所有点直接指向树根，让查找的时间复杂度降低至O(1)，总体上近似O(1)</p>
+ <span id="more"></span>
+
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>1.如何判断树根</p>
+<p><strong>if (p[x] == x)</strong></p>
+<p>2.如何求 x 的集合编号</p>
+<p><strong>while (p[x] != x) x = p[x]</strong></p>
+<p>3.如何合并两个集合</p>
+<p>假如已经找到了树根    <strong>p[x] 是 x 的集合编号，p[y] 是 y 的集合编号</strong></p>
+<p>合并操作 : <strong>p[x] = y</strong></p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p><img src="https://gitee.com/amazing-feather/images/raw/master/20210527084012.png" alt="image-20210527084012105"></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 原题链接:https://www.acwing.com/problem/content/838/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 存放每个值的集合编号</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] p = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100001</span>];</span><br><span class="line">    <span class="comment">// 存放当前集合的元素数量（每次合并只更改根结点也就是对应集合编号的点的值）</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] size = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100001</span>];</span><br><span class="line">    <span class="comment">// 对给定数a 求a所在的集合的元素数量 --&gt; size[find(a)]</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//find函数 找到元素的集合编号</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(p[x] != x) &#123;</span><br><span class="line">            <span class="comment">// 路径压缩</span></span><br><span class="line">            p[x] = find(p[x]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p[x];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="keyword">int</span> n = sc.nextInt(), m = sc.nextInt();</span><br><span class="line">        <span class="comment">// 并查集的初始化</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n; i ++)&#123;</span><br><span class="line">            p[i] = i;</span><br><span class="line">            size[i] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(m -- != <span class="number">0</span>)&#123;</span><br><span class="line">            String s = sc.next();</span><br><span class="line">            <span class="keyword">int</span> a = sc.nextInt(), b = sc.nextInt();</span><br><span class="line">            <span class="keyword">if</span>(<span class="string">&quot;M&quot;</span>.equals(s))&#123;</span><br><span class="line">                <span class="comment">// 如果已经在同一个集合就不需要操作</span></span><br><span class="line">                <span class="keyword">if</span>(find(a) == find(b))&#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 改变集合大小(只改变根结点的值)</span></span><br><span class="line">                size[find(b)] += size[find(a)];</span><br><span class="line">                <span class="comment">// 合并两个集合</span></span><br><span class="line">                p[find(a)] = find(b);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="comment">// 判断两个数是否在同一个集合</span></span><br><span class="line">                <span class="keyword">if</span>(find(a) != find(b))&#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;No&quot;</span>);</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;Yes&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
+      <tags>
+        <tag>并查集</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>快速排序</title>
+    <url>/2021/05/30/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>分治思想，每次选取一个数x，在数组中随意选（一般选取中点会好一点）</p>
+<p>通过交换让数组 <strong>左边部分全部小于等于x，右边部分全部大于等于x</strong></p>
+<p>再将 <strong>左边部分和右边部分递归</strong> 上述过程，当递归完成时，数组也排好序了</p>
+ <span id="more"></span>
+
+<p><strong>注意点</strong></p>
+<p>每次i和j交换后都应该先往后跳一步<br>当交换的两个数等于选取的分界数x时，将出现死循环</p>
+<p><strong>i，j的初始化</strong></p>
+<p>执行前要将i，j往外扩展一位</p>
+<p>使得第一次执行后 i，j指向目标位置（即当前数组的首尾）</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] arr = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10000000</span>];</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="keyword">int</span> n = sc.nextInt();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i ++)&#123;</span><br><span class="line">            arr[i] = sc.nextInt();</span><br><span class="line">        &#125;</span><br><span class="line">        quickSort(arr, <span class="number">0</span>, n - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i ++)&#123;</span><br><span class="line">            System.out.print(arr[i] + <span class="string">&quot; &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(l &gt;= r)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> x = arr[l], i = l - <span class="number">1</span>, j = r + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(i &lt; j)&#123;</span><br><span class="line">           <span class="keyword">while</span>(arr[++ i] &lt; x);</span><br><span class="line">           <span class="keyword">while</span>(arr[-- j] &gt; x);</span><br><span class="line">            <span class="keyword">if</span>(i &lt; j)&#123;</span><br><span class="line">                <span class="keyword">int</span> temp = arr[i];</span><br><span class="line">                arr[i] = arr[j];</span><br><span class="line">                arr[j] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 递归排序左右两边</span></span><br><span class="line">        quickSort(arr, l, j);</span><br><span class="line">        quickSort(arr, j + <span class="number">1</span>, r);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>排序</tag>
+        <tag>快速排序</tag>
       </tags>
   </entry>
   <entry>
@@ -334,29 +389,6 @@
       </tags>
   </entry>
   <entry>
-    <title>快速排序</title>
-    <url>/2021/05/30/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</url>
-    <content><![CDATA[<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>分治思想，每次选取一个数x，在数组中随意选（一般选取中点会好一点）</p>
-<p>通过交换让数组 <strong>左边部分全部小于等于x，右边部分全部大于等于x</strong></p>
-<p>再将 <strong>左边部分和右边部分递归</strong> 上述过程，当递归完成时，数组也排好序了</p>
- <span id="more"></span>
-
-<p><strong>注意点</strong></p>
-<p>每次i和j交换后都应该先往后跳一步<br>当交换的两个数等于选取的分界数x时，将出现死循环</p>
-<p><strong>i，j的初始化</strong></p>
-<p>执行前要将i，j往外扩展一位</p>
-<p>使得第一次执行后 i，j指向目标位置（即当前数组的首尾）</p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] arr = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10000000</span>];</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="keyword">int</span> n = sc.nextInt();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i ++)&#123;</span><br><span class="line">            arr[i] = sc.nextInt();</span><br><span class="line">        &#125;</span><br><span class="line">        quickSort(arr, <span class="number">0</span>, n - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i ++)&#123;</span><br><span class="line">            System.out.print(arr[i] + <span class="string">&quot; &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(l &gt;= r)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> x = arr[l], i = l - <span class="number">1</span>, j = r + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(i &lt; j)&#123;</span><br><span class="line">           <span class="keyword">while</span>(arr[++ i] &lt; x);</span><br><span class="line">           <span class="keyword">while</span>(arr[-- j] &gt; x);</span><br><span class="line">            <span class="keyword">if</span>(i &lt; j)&#123;</span><br><span class="line">                <span class="keyword">int</span> temp = arr[i];</span><br><span class="line">                arr[i] = arr[j];</span><br><span class="line">                arr[j] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 递归排序左右两边</span></span><br><span class="line">        quickSort(arr, l, j);</span><br><span class="line">        quickSort(arr, j + <span class="number">1</span>, r);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>算法</category>
-      </categories>
-      <tags>
-        <tag>排序</tag>
-        <tag>快速排序</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>设计模式</title>
     <url>/2021/05/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<h1 id="创建型模式"><a href="#创建型模式" class="headerlink" title="创建型模式"></a>创建型模式</h1><h2 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h2><h3 id="饿汉式"><a href="#饿汉式" class="headerlink" title="饿汉式"></a>饿汉式</h3><blockquote>
@@ -452,38 +484,6 @@
       <tags>
         <tag>架构</tag>
         <tag>java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>并查集</title>
-    <url>/2021/05/25/%E5%B9%B6%E6%9F%A5%E9%9B%86/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>并查集主要用于解决一些<strong>元素分组</strong>的问题。它管理一系列<strong>不相交的集合</strong>，并支持两种操作</p>
-<ul>
-<li><strong>合并</strong>（Union）：把两个不相交的集合合并为一个集合</li>
-<li><strong>查询</strong>（Find）：查询两个元素是否在同一个集合中</li>
-</ul>
-<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>每个集合用树来表示，树根的编号就是整个集合的编号</p>
-<p>每个节点存储父节点的位置，p[x] 表示 x 的父节点的下标</p>
-<p>当 x = p[x] 时，说明当前节点就是树根，值也就是集合编号</p>
-<p><strong>路径压缩</strong></p>
-<p>对于任意一个元素 x ，在一层一层查找其父节点时，直接让路径上的所有点直接指向树根，让查找的时间复杂度降低至O(1)，总体上近似O(1)</p>
- <span id="more"></span>
-
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>1.如何判断树根</p>
-<p><strong>if (p[x] == x)</strong></p>
-<p>2.如何求 x 的集合编号</p>
-<p><strong>while (p[x] != x) x = p[x]</strong></p>
-<p>3.如何合并两个集合</p>
-<p>假如已经找到了树根    <strong>p[x] 是 x 的集合编号，p[y] 是 y 的集合编号</strong></p>
-<p>合并操作 : <strong>p[x] = y</strong></p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p><img src="https://gitee.com/amazing-feather/images/raw/master/20210527084012.png" alt="image-20210527084012105"></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 原题链接:https://www.acwing.com/problem/content/838/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 存放每个值的集合编号</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] p = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100001</span>];</span><br><span class="line">    <span class="comment">// 存放当前集合的元素数量（每次合并只更改根结点也就是对应集合编号的点的值）</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] size = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100001</span>];</span><br><span class="line">    <span class="comment">// 对给定数a 求a所在的集合的元素数量 --&gt; size[find(a)]</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//find函数 找到元素的集合编号</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(p[x] != x) &#123;</span><br><span class="line">            <span class="comment">// 路径压缩</span></span><br><span class="line">            p[x] = find(p[x]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p[x];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="keyword">int</span> n = sc.nextInt(), m = sc.nextInt();</span><br><span class="line">        <span class="comment">// 并查集的初始化</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n; i ++)&#123;</span><br><span class="line">            p[i] = i;</span><br><span class="line">            size[i] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(m -- != <span class="number">0</span>)&#123;</span><br><span class="line">            String s = sc.next();</span><br><span class="line">            <span class="keyword">int</span> a = sc.nextInt(), b = sc.nextInt();</span><br><span class="line">            <span class="keyword">if</span>(<span class="string">&quot;M&quot;</span>.equals(s))&#123;</span><br><span class="line">                <span class="comment">// 如果已经在同一个集合就不需要操作</span></span><br><span class="line">                <span class="keyword">if</span>(find(a) == find(b))&#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 改变集合大小(只改变根结点的值)</span></span><br><span class="line">                size[find(b)] += size[find(a)];</span><br><span class="line">                <span class="comment">// 合并两个集合</span></span><br><span class="line">                p[find(a)] = find(b);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="comment">// 判断两个数是否在同一个集合</span></span><br><span class="line">                <span class="keyword">if</span>(find(a) != find(b))&#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;No&quot;</span>);</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;Yes&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>数据结构</category>
-      </categories>
-      <tags>
-        <tag>并查集</tag>
       </tags>
   </entry>
 </search>
