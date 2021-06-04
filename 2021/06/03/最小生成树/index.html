@@ -28,7 +28,7 @@
 <meta property="og:description" content="PrimO(n^2^)，类似于dijkstra，适合于稠密图  dist存的是每个点到当前集合的最短距离 当i为0时，dist[t] 一定是INF，是不用加入到结果的,因为是从这个点开始生成树">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-06-03T11:40:37.000Z">
-<meta property="article:modified_time" content="2021-06-03T11:46:59.509Z">
+<meta property="article:modified_time" content="2021-06-03T13:41:26.586Z">
 <meta property="article:author" content="惊鸿之羽">
 <meta property="article:tag" content="图论">
 <meta property="article:tag" content="Prim">
@@ -124,7 +124,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">11</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">12</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -134,7 +134,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">19</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a>
 
   </li>
         <li class="menu-item menu-item-message">
@@ -234,7 +234,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-06-03 19:40:37 / 修改时间：19:46:59" itemprop="dateCreated datePublished" datetime="2021-06-03T19:40:37+08:00">2021-06-03</time>
+              <time title="创建时间：2021-06-03 19:40:37 / 修改时间：21:41:26" itemprop="dateCreated datePublished" datetime="2021-06-03T19:40:37+08:00">2021-06-03</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -273,7 +273,7 @@
 
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> n, m, INF = <span class="number">0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> N = <span class="number">510</span>, M = <span class="number">10010</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 注意这个dist存的是到当前集合的最短距离</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] dist = <span class="keyword">new</span> <span class="keyword">int</span>[N];</span><br><span class="line">    <span class="comment">// 邻接矩阵存图</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[][] g = <span class="keyword">new</span> <span class="keyword">int</span>[N][N];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 标记点是否在集合中</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">boolean</span>[] f = <span class="keyword">new</span> <span class="keyword">boolean</span>[N];</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">prim</span><span class="params">()</span></span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 初始化距离</span></span><br><span class="line">        Arrays.fill(dist, INF);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i ++)&#123;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 找到当前离集合最近的点</span></span><br><span class="line">            <span class="keyword">int</span> t= -<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j ++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(!f[j] &amp;&amp; (t == -<span class="number">1</span> || dist[t] &gt; dist[j]))&#123;</span><br><span class="line">                    t = j;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 如果除第一个加进来的之外的点的最小值是INF,</span></span><br><span class="line">            <span class="comment">// 说明当前集合与其他点不连通，则无生成树</span></span><br><span class="line">            <span class="keyword">if</span>(i != <span class="number">0</span> &amp;&amp; dist[t] == INF)&#123;</span><br><span class="line">                <span class="keyword">return</span> INF;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 累加路径和</span></span><br><span class="line">            <span class="comment">// 第一趟加入的点是任意的，</span></span><br><span class="line">            <span class="comment">// 当i为0时，dist[t] 一定是INF，是不用加入进来的,因为是从这个点开始生成树</span></span><br><span class="line">            <span class="keyword">if</span>(i != <span class="number">0</span>)&#123;</span><br><span class="line">                res += dist[t];</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 标记t已经在被加入了集合</span></span><br><span class="line">             f[t] = <span class="keyword">true</span>;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 由点t去更新其他最短路径</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j ++)&#123;</span><br><span class="line">                dist[j] = Math.min(dist[j], g[t][j]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        n = sc.nextInt();</span><br><span class="line">        m = sc.nextInt();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i ++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j ++)&#123;</span><br><span class="line">                g[i][j] = INF;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i ++)&#123;</span><br><span class="line">            <span class="keyword">int</span> a = sc.nextInt(),b = sc.nextInt(), x = sc.nextInt();</span><br><span class="line">      </span><br><span class="line">            <span class="comment">// 无向图，重边取最短</span></span><br><span class="line">            g[a][b] = Math.min(g[a][b], x);</span><br><span class="line">            g[b][a] = Math.min(g[a][b], x);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> t = prim();</span><br><span class="line">        <span class="keyword">if</span>(t == INF) System.out.println(<span class="string">&quot;impossible&quot;</span>);</span><br><span class="line">        <span class="keyword">else</span> System.out.println(t);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="kruskal"><a href="#kruskal" class="headerlink" title="kruskal"></a>kruskal</h3><p><strong>O(mlogm)，常数很小，实际效果非常好</strong></p>
+<h3 id="kruskal"><a href="#kruskal" class="headerlink" title="kruskal"></a>kruskal</h3><p><strong>O(mlogm)，常数很小，实际效果较好</strong></p>
 <p>步骤</p>
 <ul>
 <li>先按边的权重给边排序</li>
@@ -310,7 +310,10 @@
     <a href="/2021/06/02/%E6%9C%80%E7%9F%AD%E8%B7%AF/" rel="prev" title="最短路">
       <i class="fa fa-chevron-left"></i> 最短路
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/06/04/%E4%BA%8C%E5%88%86%E5%9B%BE/" rel="next" title="二分图">
+      二分图 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -385,7 +388,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -398,7 +401,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
