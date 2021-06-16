@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"raindown.top","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"raindown.top","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="单源最短路边权均为整数朴素DijkstraO(n^2^)，适合稠密图 用邻接矩阵来存  步骤  在当前所有没有被确定最短路的点中寻找值最小的点t 直接确定 t 这个点已经为最短路 更新 t 的所有出边  细节问题 不要一开始就将f[1]设为true，因为还需要第一个点的路径去延展其他的路径点 0x3f3f3f3f的选取（不会溢出，数量级与0x7f7f7f7f（整型最大值）等同）">
@@ -262,20 +262,6 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/06/02/%E6%9C%80%E7%9F%AD%E8%B7%AF/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/06/02/%E6%9C%80%E7%9F%AD%E8%B7%AF/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 
         </div>
       </header>
@@ -395,10 +381,60 @@
   
 
 
+    
+    <head>
+      <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+    </head>
+    <body>
+      <div style="height: 30px"></div>
+      <div id="vcomments"></div>
+      <script>
+          new Valine({
+              el: '#vcomments',
+              appId: 'poravaEALPCICL2C8hDu8xSQ-MdYXbMMI',
+              appKey: 'MNF4VWqvAFyhJhNhz8aTyafr',
+              placeholder: '昵称填写qq号可自动获取qq头像，同时支持markdown哦',
+              pageSize: 10,
+              lang: 'zh-CN',
+              meta: ['nick','mail','link'],
+              requiredFields: ['nick'],
+              enableQQ: true,
+              visitor: true,
+
+              // 设置Bilibili表情包地址
+              emojiCDN: '//i0.hdslb.com/bfs/emote/', 
+              // 表情title和图片映射
+              emojiMaps: {
+                  "tv_doge": "6ea59c827c414b4a2955fe79e0f6fd3dcd515e24.png",
+                  "tv_亲亲": "a8111ad55953ef5e3be3327ef94eb4a39d535d06.png",
+                  "tv_偷笑": "bb690d4107620f1c15cff29509db529a73aee261.png",
+                  "tv_再见": "180129b8ea851044ce71caf55cc8ce44bd4a4fc8.png",
+                  "tv_冷漠": "b9cbc755c2b3ee43be07ca13de84e5b699a3f101.png",
+                  "tv_发怒": "34ba3cd204d5b05fec70ce08fa9fa0dd612409ff.png",
+                  "tv_发财": "34db290afd2963723c6eb3c4560667db7253a21a.png",
+                  "tv_可爱": "9e55fd9b500ac4b96613539f1ce2f9499e314ed9.png",
+                  "tv_吐血": "09dd16a7aa59b77baa1155d47484409624470c77.png",
+                  "tv_呆": "fe1179ebaa191569b0d31cecafe7a2cd1c951c9d.png",
+                  "tv_呕吐": "9f996894a39e282ccf5e66856af49483f81870f3.png",
+                  "tv_困": "241ee304e44c0af029adceb294399391e4737ef2.png",
+                  "tv_坏笑": "1f0b87f731a671079842116e0991c91c2c88645a.png",
+                  "tv_大佬": "093c1e2c490161aca397afc45573c877cdead616.png",
+                  "tv_大哭": "23269aeb35f99daee28dda129676f6e9ea87934f.png",
+                  "tv_委屈": "d04dba7b5465779e9755d2ab6f0a897b9b33bb77.png",
+                  "tv_害羞": "a37683fb5642fa3ddfc7f4e5525fd13e42a2bdb1.png",
+                  "tv_尴尬": "7cfa62dafc59798a3d3fb262d421eeeff166cfa4.png",
+                  "tv_微笑": "70dc5c7b56f93eb61bddba11e28fb1d18fddcd4c.png",
+                  "tv_思考": "90cf159733e558137ed20aa04d09964436f618a1.png",
+                  "tv_惊吓": "0d15c7e2ee58e935adc6a7193ee042388adc22af.png"
+              } 
+
+          })
+      </script>
+    </body>
+
 
           </div>
           
-    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -633,35 +669,6 @@
   
 
   
-
-
-<script>
-NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
-  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
-    var GUEST = ['nick', 'mail', 'link'];
-    var guest = '昵称,邮箱,链接';
-    guest = guest.split(',').filter(item => {
-      return GUEST.includes(item);
-    });
-    new Valine({
-      el         : '#valine-comments',
-      verify     : false,
-      notify     : true,
-      appId      : 'poravaEALPCICL2C8hDu8xSQ-MdYXbMMI',
-      appKey     : 'MNF4VWqvAFyhJhNhz8aTyafr',
-      placeholder: "留下你的看法",
-      avatar     : 'mm',
-      meta       : guest,
-      pageSize   : '10' || 10,
-      visitor    : false,
-      lang       : 'zh-cn' || 'zh-cn',
-      path       : location.pathname,
-      recordIP   : true,
-      serverURLs : ''
-    });
-  }, window.Valine);
-});
-</script>
 
 </body>
 </html>
