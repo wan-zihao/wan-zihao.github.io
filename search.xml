@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>JUC</title>
+    <url>/2021/11/08/JUC/</url>
+    <content><![CDATA[<p><code>自旋锁（spinlock）</code>是指==尝试获取锁的线程不会立即阻塞，而是循环尝试获取锁==</p>
+ <span id="more"></span>
+
+<blockquote>
+<p>优点是减少线程上下文切换的消耗 </p>
+<p>缺点是循环会消耗CPU性能</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>juc</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>初等数论</title>
     <url>/2021/07/07/%E5%88%9D%E7%AD%89%E6%95%B0%E8%AE%BA/</url>
     <content><![CDATA[<p><strong>ps：待更新</strong></p>
@@ -114,24 +132,6 @@
         <tag>组合数学</tag>
         <tag>容斥原理</tag>
         <tag>博弈论</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JUC</title>
-    <url>/2021/11/08/JUC/</url>
-    <content><![CDATA[<p><code>自旋锁（spinlock）</code>是指==尝试获取锁的线程不会立即阻塞，而是循环尝试获取锁==</p>
- <span id="more"></span>
-
-<blockquote>
-<p>优点是减少线程上下文切换的消耗 </p>
-<p>缺点是循环会消耗CPU性能</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>java</category>
-      </categories>
-      <tags>
-        <tag>juc</tag>
       </tags>
   </entry>
   <entry>
